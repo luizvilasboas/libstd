@@ -1,0 +1,49 @@
+name: Generate Documentation on Release
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt install doxygen graphviz
+      - name: Build Doxygen Documentation
+        run: doxygen Doxyfile
+      - name: Deploy to pages branch
+        env:
+          TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          git config user.name "forgejo-runner[bot]"
+          git config user.email "runner@noreply.codeberg.org"
+
+          TMP_DOCS=$(mktemp -d)
+          cp -r docs/html/* "$TMP_DOCS/"
+
+          git fetch origin
+          if git rev-parse --verify origin/pages >/dev/null 2>&1; then
+            git checkout pages
+            git pull origin pages
+          else
+            git checkout --orphan pages
+            git rm -rf .
+          fi
+
+          rm -rf ./*
+          cp -r "$TMP_DOCS"/* .
+          rm -rf "$TMP_DOCS"
+
+          git add .
+
+          if git diff --staged --quiet; then
+            echo "Nothing changed on the documentation"
+          else
+            git commit -m "docs: generating documentation from ${GITHUB_REF_NAME}"
+            git push https://${TOKEN}@codeberg.org/${GITHUB_REPOSITORY}.git pages
+          fi
