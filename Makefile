@@ -15,7 +15,7 @@ SRC = $(shell find $(SRC_DIR) -name '*.c')
 TEST_SRC = $(shell find $(TEST_DIR) -name '*_test.c')
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(BIN_DIR)/%.o, $(SRC))
 
-TEST_BINARIES = $(patsubst $(TEST_DIR)/%.c,  	$(BIN_DIR)/%, $(TEST_SRC))
+TEST_BINARIES = $(patsubst $(TEST_DIR)/%.c, $(BIN_DIR)/%, $(TEST_SRC))
 
 ALL_SOURCE_FILES = $(shell find $(SRC_DIR) $(TEST_DIR) $(INCLUDE_DIR) -name "*.c" -o -name "*.h")
 
@@ -88,5 +88,3 @@ lint: $(ALL_SOURCE_FILES)
 
 clean:
 	rm -rf $(BIN_DIR) $(LIB_DIR)
-
-.PHONY: all install uninstall test clean leak
