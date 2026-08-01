@@ -13,7 +13,7 @@ repos:
     rev: v2.4.3
     hooks:
       - id: codespell
-        name: codespell (código)
+        name: codespell (code)
         types_or: [c, header]
       - id: codespell
         name: codespell (commit messages)
