@@ -12,4 +12,6 @@ jobs:
       - uses: https://data.forgejo.org/actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Install Cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
       - uses: pre-commit/action@v3.0.1
