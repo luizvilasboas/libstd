@@ -97,4 +97,4 @@ If you have a suggestion that would make this better, please fork the repo and c
 
 ## License
 
-[LGPLv3](https://codeberg.org/luizvilasboas/libstd/src/branch/main/LICENSE)
+[LGPLv2.1](https://codeberg.org/luizvilasboas/libstd/src/branch/main/LICENSE)
